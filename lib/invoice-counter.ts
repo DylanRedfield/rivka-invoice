@@ -1,23 +1,36 @@
-import { kv } from '@vercel/kv';
+import { createClient } from 'redis';
 
 const INVOICE_COUNTER_KEY = 'invoice_counter';
 const STARTING_INVOICE_NUMBER = 80003;
 
+let redisClient: ReturnType<typeof createClient> | null = null;
+
+async function getRedisClient() {
+  if (!redisClient) {
+    redisClient = createClient({
+      url: process.env.REDIS_URL,
+    });
+    await redisClient.connect();
+  }
+  return redisClient;
+}
+
 export async function getNextInvoiceNumber(): Promise<number> {
   try {
-    const currentNumber = await kv.get<number>(INVOICE_COUNTER_KEY);
+    const client = await getRedisClient();
+    const currentNumber = await client.get(INVOICE_COUNTER_KEY);
 
     if (currentNumber === null) {
-      await kv.set(INVOICE_COUNTER_KEY, STARTING_INVOICE_NUMBER + 1);
+      await client.set(INVOICE_COUNTER_KEY, String(STARTING_INVOICE_NUMBER + 1));
       return STARTING_INVOICE_NUMBER;
     }
 
-    const nextNumber = currentNumber;
-    await kv.set(INVOICE_COUNTER_KEY, nextNumber + 1);
+    const nextNumber = parseInt(currentNumber, 10);
+    await client.set(INVOICE_COUNTER_KEY, String(nextNumber + 1));
 
     return nextNumber;
   } catch (error) {
-    console.error('Error accessing KV store:', error);
+    console.error('Error accessing Redis:', error);
     return Date.now();
   }
 }
