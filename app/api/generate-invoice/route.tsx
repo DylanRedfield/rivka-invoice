@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { renderToStream } from '@react-pdf/renderer';
+import { renderToBuffer } from '@react-pdf/renderer';
 import InvoicePDF from '@/components/InvoicePDF';
 import { getNextInvoiceNumber } from '@/lib/invoice-counter';
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       year: 'numeric',
     });
 
-    const stream = await renderToStream(
+    const buffer = await renderToBuffer(
       <InvoicePDF
         invoiceNumber={invoiceNumber}
         clientName={clientName}
@@ -29,18 +29,6 @@ export async function POST(request: NextRequest) {
         date={currentDate}
       />
     );
-
-    const chunks: Uint8Array[] = [];
-    const reader = stream.getReader();
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      if (value) chunks.push(value);
-    }
-
-    const blob = new Blob(chunks, { type: 'application/pdf' });
-    const buffer = await blob.arrayBuffer();
 
     return new NextResponse(buffer, {
       headers: {
