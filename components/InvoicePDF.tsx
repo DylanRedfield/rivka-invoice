@@ -181,8 +181,8 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
           <View style={styles.leftInfo}>
             <Text style={{ fontWeight: 'bold', marginBottom: 8 }}>קולמן רבקה תמר</Text>
             <Text>עוסק פטור: 209643832</Text>
-            <Text>התאנה</Text>
-            <Text>טלפון: 972585052814+</Text>
+            <Text>התאנה 16, מרכז שפירא</Text>
+            <Text>טלפון: ‎+972585052814</Text>
           </View>
         </View>
 
