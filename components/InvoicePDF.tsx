@@ -171,10 +171,9 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
           <View style={styles.rightBox}>
             <Text style={styles.dateText}>{documentDate}</Text>
             <Text style={styles.invoiceTitle}>קבלה</Text>
-            <Text style={styles.businessName}>{clientName}</Text>
+            <Text style={styles.businessName}>לכבוד {clientName}</Text>
             <View style={styles.divider} />
             <Text style={styles.invoiceNumber}>קבלה {invoiceNumber}</Text>
-            <Text style={styles.invoiceLabel}>מילוי</Text>
           </View>
 
           <View style={styles.leftInfo}>
