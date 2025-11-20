@@ -146,9 +146,18 @@ interface InvoicePDFProps {
   clientName: string;
   amount: number;
   date: string;
+  treatmentDate: string;
+  paymentMethod: string;
 }
 
-const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoiceNumber, clientName, amount, date }) => {
+const InvoicePDF: React.FC<InvoicePDFProps> = ({
+  invoiceNumber,
+  clientName,
+  amount,
+  date,
+  treatmentDate,
+  paymentMethod
+}) => {
   const formattedAmount = `₪${amount.toFixed(2)}`;
 
   return (
@@ -186,8 +195,8 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoiceNumber, clientName, amou
 
           <View style={styles.tableRow}>
             <Text style={styles.tableCol1}>{formattedAmount}</Text>
-            <Text style={styles.tableCol2}>העברה בנקאית</Text>
-            <Text style={styles.tableCol3}>{date}</Text>
+            <Text style={styles.tableCol2}>{paymentMethod}</Text>
+            <Text style={styles.tableCol3}>{treatmentDate}</Text>
             <Text style={styles.tableCol4}>{clientName}</Text>
           </View>
 

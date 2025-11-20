@@ -5,7 +5,7 @@ import { getNextInvoiceNumber } from '@/lib/invoice-counter';
 
 export async function POST(request: NextRequest) {
   try {
-    const { clientName, amount } = await request.json();
+    const { clientName, amount, treatmentDate, paymentMethod } = await request.json();
 
     if (!clientName || !amount) {
       return NextResponse.json(
@@ -21,12 +21,24 @@ export async function POST(request: NextRequest) {
       year: 'numeric',
     });
 
+    const formattedTreatmentDate = treatmentDate
+      ? new Date(treatmentDate).toLocaleDateString('he-IL', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        })
+      : currentDate;
+
+    const paymentMethodText = paymentMethod === 'cash' ? 'מזומן' : 'העברה בנקאית';
+
     const pdfBuffer = await renderToBuffer(
       <InvoicePDF
         invoiceNumber={invoiceNumber}
         clientName={clientName}
         amount={amount}
         date={currentDate}
+        treatmentDate={formattedTreatmentDate}
+        paymentMethod={paymentMethodText}
       />
     );
 

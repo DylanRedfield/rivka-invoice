@@ -5,6 +5,8 @@ import { useState } from 'react';
 export default function Home() {
   const [clientName, setClientName] = useState('');
   const [amount, setAmount] = useState('');
+  const [treatmentDate, setTreatmentDate] = useState(new Date().toISOString().split('T')[0]);
+  const [paymentMethod, setPaymentMethod] = useState('bank_transfer');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,6 +22,8 @@ export default function Home() {
         body: JSON.stringify({
           clientName,
           amount: parseFloat(amount),
+          treatmentDate,
+          paymentMethod,
         }),
       });
 
@@ -39,6 +43,8 @@ export default function Home() {
 
       setClientName('');
       setAmount('');
+      setTreatmentDate(new Date().toISOString().split('T')[0]);
+      setPaymentMethod('bank_transfer');
     } catch (error) {
       console.error('Error generating invoice:', error);
       alert('Failed to generate invoice');
@@ -89,6 +95,37 @@ export default function Home() {
                 placeholder="הכנס סכום"
                 dir="rtl"
               />
+            </div>
+
+            <div>
+              <label htmlFor="treatmentDate" className="block text-sm font-medium text-gray-700 text-right mb-2">
+                תאריך טיפול
+              </label>
+              <input
+                type="date"
+                id="treatmentDate"
+                value={treatmentDate}
+                onChange={(e) => setTreatmentDate(e.target.value)}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right"
+                dir="rtl"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-700 text-right mb-2">
+                אמצעי תשלום
+              </label>
+              <select
+                id="paymentMethod"
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right"
+                dir="rtl"
+              >
+                <option value="bank_transfer">העברה בנקאית</option>
+                <option value="cash">מזומן</option>
+              </select>
             </div>
 
             <button
