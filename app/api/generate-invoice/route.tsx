@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       year: 'numeric',
     });
 
-    const buffer = await renderToBuffer(
+    const pdfBuffer = await renderToBuffer(
       <InvoicePDF
         invoiceNumber={invoiceNumber}
         clientName={clientName}
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       />
     );
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="invoice-${invoiceNumber}.pdf"`,
