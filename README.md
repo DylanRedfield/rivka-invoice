@@ -66,8 +66,9 @@ git push -u origin main
 ## Business Information
 
 The invoices include the following fixed information:
-- Business Name: עזן ושמח לילדינו בגינה
-- Owner: רבקה חנה קולמן (Rivka Chana Colman)
+- Owner: רבקה תמר קולמן (Rivka Tamar Colman)
 - Osek Pator: 209643832
 - Address: הוחזה 16 מרכז שפירא
 - Phone: +972585052814
+
+Note: Customer name appears prominently in the invoice header.
