@@ -212,6 +212,10 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
           </View>
         </View>
 
+        <View style={styles.footer}>
+          <Text>נוצר באמצעות מערכת הנפקת קבלות | קבלה {invoiceNumber} | {documentDate}</Text>
+        </View>
+
       </Page>
     </Document>
   );
