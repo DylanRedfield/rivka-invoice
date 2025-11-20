@@ -3,13 +3,19 @@ import { renderToBuffer } from '@react-pdf/renderer';
 import InvoicePDF from '@/components/InvoicePDF';
 import { getNextInvoiceNumber } from '@/lib/invoice-counter';
 
+interface LineItem {
+  paymentMethod: string;
+  amount: number;
+  details: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const { clientName, amount, treatmentDate, paymentMethod } = await request.json();
+    const { clientName, treatmentDate, lineItems } = await request.json();
 
-    if (!clientName || !amount) {
+    if (!clientName || !lineItems || lineItems.length === 0) {
       return NextResponse.json(
-        { error: 'Client name and amount are required' },
+        { error: 'Client name and at least one line item are required' },
         { status: 400 }
       );
     }
@@ -29,16 +35,24 @@ export async function POST(request: NextRequest) {
         })
       : currentDate;
 
-    const paymentMethodText = paymentMethod === 'cash' ? 'מזומן' : 'העברה בנקאית';
+    const formattedLineItems = lineItems.map((item: LineItem) => ({
+      paymentMethod:
+        item.paymentMethod === 'cash'
+          ? 'מזומן'
+          : item.paymentMethod === 'other'
+          ? 'אחר'
+          : 'העברה בנקאית',
+      amount: item.amount,
+      details: item.details || '',
+    }));
 
     const pdfBuffer = await renderToBuffer(
       <InvoicePDF
         invoiceNumber={invoiceNumber}
         clientName={clientName}
-        amount={amount}
         date={currentDate}
         treatmentDate={formattedTreatmentDate}
-        paymentMethod={paymentMethodText}
+        lineItems={formattedLineItems}
       />
     );
 

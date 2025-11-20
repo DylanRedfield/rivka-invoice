@@ -80,17 +80,22 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   tableCol1: {
-    width: '33.33%',
+    width: '25%',
     textAlign: 'right',
     fontSize: 10,
   },
   tableCol2: {
-    width: '33.33%',
+    width: '25%',
     textAlign: 'right',
     fontSize: 10,
   },
   tableCol3: {
-    width: '33.34%',
+    width: '25%',
+    textAlign: 'right',
+    fontSize: 10,
+  },
+  tableCol4: {
+    width: '25%',
     textAlign: 'right',
     fontSize: 10,
   },
@@ -136,24 +141,29 @@ const styles = StyleSheet.create({
   },
 });
 
+interface LineItem {
+  paymentMethod: string;
+  amount: number;
+  details: string;
+}
+
 interface InvoicePDFProps {
   invoiceNumber: number;
   clientName: string;
-  amount: number;
   date: string;
   treatmentDate: string;
-  paymentMethod: string;
+  lineItems: LineItem[];
 }
 
 const InvoicePDF: React.FC<InvoicePDFProps> = ({
   invoiceNumber,
   clientName,
-  amount,
   date,
   treatmentDate,
-  paymentMethod
+  lineItems
 }) => {
-  const formattedAmount = `₪${amount.toFixed(2)}`;
+  const total = lineItems.reduce((sum, item) => sum + item.amount, 0);
+  const formattedTotal = `₪${total.toFixed(2)}`;
 
   return (
     <Document>
@@ -171,7 +181,7 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
           <View style={styles.leftInfo}>
             <Text style={{ fontWeight: 'bold', marginBottom: 8 }}>קולמן רבקה תמר</Text>
             <Text>עוסק פטור: 209643832</Text>
-            <Text>הוחזה 16 מרכז שפירא</Text>
+            <Text>התאנה</Text>
             <Text>טלפון: 972585052814+</Text>
           </View>
         </View>
@@ -183,19 +193,23 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
         <View style={styles.table}>
           <View style={styles.tableHeader}>
             <Text style={styles.tableCol1}>אמצעי תשלום</Text>
-            <Text style={styles.tableCol2}>פירוט</Text>
-            <Text style={styles.tableCol3}>תאריך</Text>
+            <Text style={styles.tableCol2}>סכום</Text>
+            <Text style={styles.tableCol3}>פירוט</Text>
+            <Text style={styles.tableCol4}>תאריך</Text>
           </View>
 
-          <View style={styles.tableRow}>
-            <Text style={styles.tableCol1}>{formattedAmount}</Text>
-            <Text style={styles.tableCol2}>{paymentMethod}</Text>
-            <Text style={styles.tableCol3}>{treatmentDate}</Text>
-          </View>
+          {lineItems.map((item, index) => (
+            <View key={index} style={styles.tableRow}>
+              <Text style={styles.tableCol1}>{item.paymentMethod}</Text>
+              <Text style={styles.tableCol2}>₪{item.amount.toFixed(2)}</Text>
+              <Text style={styles.tableCol3}>{item.details}</Text>
+              <Text style={styles.tableCol4}>{treatmentDate}</Text>
+            </View>
+          ))}
 
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>סה"כ</Text>
-            <Text style={styles.totalAmount}>{formattedAmount}</Text>
+            <Text style={styles.totalAmount}>{formattedTotal}</Text>
           </View>
         </View>
 
