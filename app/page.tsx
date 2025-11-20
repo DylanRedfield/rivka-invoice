@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 interface LineItem {
   paymentMethod: string;
+  customPaymentMethod: string;
   amount: string;
   details: string;
   date: string;
@@ -13,12 +14,12 @@ export default function Home() {
   const [clientName, setClientName] = useState('');
   const [documentDate, setDocumentDate] = useState(new Date().toISOString().split('T')[0]);
   const [lineItems, setLineItems] = useState<LineItem[]>([
-    { paymentMethod: 'bank_transfer', amount: '', details: '', date: new Date().toISOString().split('T')[0] }
+    { paymentMethod: 'bank_transfer', customPaymentMethod: '', amount: '', details: '', date: new Date().toISOString().split('T')[0] }
   ]);
   const [loading, setLoading] = useState(false);
 
   const addLineItem = () => {
-    setLineItems([...lineItems, { paymentMethod: 'bank_transfer', amount: '', details: '', date: new Date().toISOString().split('T')[0] }]);
+    setLineItems([...lineItems, { paymentMethod: 'bank_transfer', customPaymentMethod: '', amount: '', details: '', date: new Date().toISOString().split('T')[0] }]);
   };
 
   const removeLineItem = (index: number) => {
@@ -48,6 +49,7 @@ export default function Home() {
           documentDate,
           lineItems: lineItems.map(item => ({
             paymentMethod: item.paymentMethod,
+            customPaymentMethod: item.customPaymentMethod,
             amount: parseFloat(item.amount),
             details: item.details,
             date: item.date,
@@ -71,7 +73,7 @@ export default function Home() {
 
       setClientName('');
       setDocumentDate(new Date().toISOString().split('T')[0]);
-      setLineItems([{ paymentMethod: 'bank_transfer', amount: '', details: '', date: new Date().toISOString().split('T')[0] }]);
+      setLineItems([{ paymentMethod: 'bank_transfer', customPaymentMethod: '', amount: '', details: '', date: new Date().toISOString().split('T')[0] }]);
     } catch (error) {
       console.error('Error generating invoice:', error);
       alert('Failed to generate invoice');
@@ -160,9 +162,28 @@ export default function Home() {
                       >
                         <option value="bank_transfer">העברה בנקאית</option>
                         <option value="cash">מזומן</option>
+                        <option value="paybox">Paybox</option>
+                        <option value="bit">Bit</option>
                         <option value="other">אחר</option>
                       </select>
                     </div>
+
+                    {item.paymentMethod === 'other' && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 text-right mb-2">
+                          פרט אמצעי תשלום
+                        </label>
+                        <input
+                          type="text"
+                          value={item.customPaymentMethod}
+                          onChange={(e) => updateLineItem(index, 'customPaymentMethod', e.target.value)}
+                          required
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right text-gray-900"
+                          placeholder="הכנס אמצעי תשלום"
+                          dir="rtl"
+                        />
+                      </div>
+                    )}
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 text-right mb-2">

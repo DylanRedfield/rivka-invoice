@@ -5,6 +5,7 @@ import { getNextInvoiceNumber } from '@/lib/invoice-counter';
 
 interface LineItem {
   paymentMethod: string;
+  customPaymentMethod: string;
   amount: number;
   details: string;
   date: string;
@@ -39,8 +40,12 @@ export async function POST(request: NextRequest) {
       paymentMethod:
         item.paymentMethod === 'cash'
           ? 'מזומן'
+          : item.paymentMethod === 'paybox'
+          ? 'Paybox'
+          : item.paymentMethod === 'bit'
+          ? 'Bit'
           : item.paymentMethod === 'other'
-          ? 'אחר'
+          ? item.customPaymentMethod || 'אחר'
           : 'העברה בנקאית',
       amount: item.amount,
       details: item.details || '',

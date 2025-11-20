@@ -212,11 +212,6 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
           </View>
         </View>
 
-        <View style={styles.footer}>
-          <Text>תודתה דיגיטלית מאובטחת</Text>
-          <Text>נוצר באמצעות מערכת הנפקת קבלות | קבלה {invoiceNumber} | {documentDate} 12:58 הנפק ב</Text>
-          <Text>מוסף קוכזיות ח"מ את התשלום לא מקבילת 1 עמוד | נוצר</Text>
-        </View>
       </Page>
     </Document>
   );
