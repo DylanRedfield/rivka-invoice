@@ -22,12 +22,12 @@ export async function POST(request: NextRequest) {
     });
 
     const stream = await renderToStream(
-      InvoicePDF({
-        invoiceNumber,
-        clientName,
-        amount,
-        date: currentDate,
-      })
+      <InvoicePDF
+        invoiceNumber={invoiceNumber}
+        clientName={clientName}
+        amount={amount}
+        date={currentDate}
+      />
     );
 
     const chunks: Uint8Array[] = [];
