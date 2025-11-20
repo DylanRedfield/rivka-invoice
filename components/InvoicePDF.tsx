@@ -145,21 +145,20 @@ interface LineItem {
   paymentMethod: string;
   amount: number;
   details: string;
+  date: string;
 }
 
 interface InvoicePDFProps {
   invoiceNumber: number;
   clientName: string;
-  date: string;
-  treatmentDate: string;
+  documentDate: string;
   lineItems: LineItem[];
 }
 
 const InvoicePDF: React.FC<InvoicePDFProps> = ({
   invoiceNumber,
   clientName,
-  date,
-  treatmentDate,
+  documentDate,
   lineItems
 }) => {
   const total = lineItems.reduce((sum, item) => sum + item.amount, 0);
@@ -170,7 +169,7 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <View style={styles.rightBox}>
-            <Text style={styles.dateText}>{date}</Text>
+            <Text style={styles.dateText}>{documentDate}</Text>
             <Text style={styles.invoiceTitle}>קבלה</Text>
             <Text style={styles.businessName}>{clientName}</Text>
             <View style={styles.divider} />
@@ -203,7 +202,7 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
               <Text style={styles.tableCol1}>{item.paymentMethod}</Text>
               <Text style={styles.tableCol2}>₪{item.amount.toFixed(2)}</Text>
               <Text style={styles.tableCol3}>{item.details}</Text>
-              <Text style={styles.tableCol4}>{treatmentDate}</Text>
+              <Text style={styles.tableCol4}>{item.date}</Text>
             </View>
           ))}
 
@@ -215,7 +214,7 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
 
         <View style={styles.footer}>
           <Text>תודתה דיגיטלית מאובטחת</Text>
-          <Text>נוצר באמצעות מערכת הנפקת קבלות | קבלה {invoiceNumber} | {date} 12:58 הנפק ב</Text>
+          <Text>נוצר באמצעות מערכת הנפקת קבלות | קבלה {invoiceNumber} | {documentDate} 12:58 הנפק ב</Text>
           <Text>מוסף קוכזיות ח"מ את התשלום לא מקבילת 1 עמוד | נוצר</Text>
         </View>
       </Page>

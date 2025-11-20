@@ -7,11 +7,12 @@ interface LineItem {
   paymentMethod: string;
   amount: number;
   details: string;
+  date: string;
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const { clientName, treatmentDate, lineItems } = await request.json();
+    const { clientName, documentDate, lineItems } = await request.json();
 
     if (!clientName || !lineItems || lineItems.length === 0) {
       return NextResponse.json(
@@ -21,19 +22,18 @@ export async function POST(request: NextRequest) {
     }
 
     const invoiceNumber = await getNextInvoiceNumber();
-    const currentDate = new Date().toLocaleDateString('he-IL', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    });
 
-    const formattedTreatmentDate = treatmentDate
-      ? new Date(treatmentDate).toLocaleDateString('he-IL', {
+    const formattedDocumentDate = documentDate
+      ? new Date(documentDate).toLocaleDateString('he-IL', {
           day: '2-digit',
           month: '2-digit',
           year: 'numeric',
         })
-      : currentDate;
+      : new Date().toLocaleDateString('he-IL', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        });
 
     const formattedLineItems = lineItems.map((item: LineItem) => ({
       paymentMethod:
@@ -44,14 +44,20 @@ export async function POST(request: NextRequest) {
           : 'העברה בנקאית',
       amount: item.amount,
       details: item.details || '',
+      date: item.date
+        ? new Date(item.date).toLocaleDateString('he-IL', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          })
+        : formattedDocumentDate,
     }));
 
     const pdfBuffer = await renderToBuffer(
       <InvoicePDF
         invoiceNumber={invoiceNumber}
         clientName={clientName}
-        date={currentDate}
-        treatmentDate={formattedTreatmentDate}
+        documentDate={formattedDocumentDate}
         lineItems={formattedLineItems}
       />
     );

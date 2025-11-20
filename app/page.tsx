@@ -6,18 +6,19 @@ interface LineItem {
   paymentMethod: string;
   amount: string;
   details: string;
+  date: string;
 }
 
 export default function Home() {
   const [clientName, setClientName] = useState('');
-  const [treatmentDate, setTreatmentDate] = useState(new Date().toISOString().split('T')[0]);
+  const [documentDate, setDocumentDate] = useState(new Date().toISOString().split('T')[0]);
   const [lineItems, setLineItems] = useState<LineItem[]>([
-    { paymentMethod: 'bank_transfer', amount: '', details: '' }
+    { paymentMethod: 'bank_transfer', amount: '', details: '', date: new Date().toISOString().split('T')[0] }
   ]);
   const [loading, setLoading] = useState(false);
 
   const addLineItem = () => {
-    setLineItems([...lineItems, { paymentMethod: 'bank_transfer', amount: '', details: '' }]);
+    setLineItems([...lineItems, { paymentMethod: 'bank_transfer', amount: '', details: '', date: new Date().toISOString().split('T')[0] }]);
   };
 
   const removeLineItem = (index: number) => {
@@ -44,11 +45,12 @@ export default function Home() {
         },
         body: JSON.stringify({
           clientName,
-          treatmentDate,
+          documentDate,
           lineItems: lineItems.map(item => ({
             paymentMethod: item.paymentMethod,
             amount: parseFloat(item.amount),
             details: item.details,
+            date: item.date,
           })),
         }),
       });
@@ -68,8 +70,8 @@ export default function Home() {
       document.body.removeChild(a);
 
       setClientName('');
-      setTreatmentDate(new Date().toISOString().split('T')[0]);
-      setLineItems([{ paymentMethod: 'bank_transfer', amount: '', details: '' }]);
+      setDocumentDate(new Date().toISOString().split('T')[0]);
+      setLineItems([{ paymentMethod: 'bank_transfer', amount: '', details: '', date: new Date().toISOString().split('T')[0] }]);
     } catch (error) {
       console.error('Error generating invoice:', error);
       alert('Failed to generate invoice');
@@ -105,14 +107,14 @@ export default function Home() {
             </div>
 
             <div>
-              <label htmlFor="treatmentDate" className="block text-sm font-medium text-gray-700 text-right mb-2">
-                תאריך טיפול
+              <label htmlFor="documentDate" className="block text-sm font-medium text-gray-700 text-right mb-2">
+                תאריך מסמך
               </label>
               <input
                 type="date"
-                id="treatmentDate"
-                value={treatmentDate}
-                onChange={(e) => setTreatmentDate(e.target.value)}
+                id="documentDate"
+                value={documentDate}
+                onChange={(e) => setDocumentDate(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right text-gray-900"
                 dir="rtl"
@@ -189,6 +191,20 @@ export default function Home() {
                         onChange={(e) => updateLineItem(index, 'details', e.target.value)}
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right text-gray-900"
                         placeholder="הכנס פירוט"
+                        dir="rtl"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 text-right mb-2">
+                        תאריך
+                      </label>
+                      <input
+                        type="date"
+                        value={item.date}
+                        onChange={(e) => updateLineItem(index, 'date', e.target.value)}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right text-gray-900"
                         dir="rtl"
                       />
                     </div>
