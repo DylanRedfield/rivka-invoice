@@ -73,7 +73,7 @@ export default function Home() {
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right text-gray-900"
                 placeholder="הכנס שם לקוח"
                 dir="rtl"
               />
@@ -91,7 +91,7 @@ export default function Home() {
                 required
                 step="0.01"
                 min="0"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right text-gray-900"
                 placeholder="הכנס סכום"
                 dir="rtl"
               />
@@ -107,7 +107,7 @@ export default function Home() {
                 value={treatmentDate}
                 onChange={(e) => setTreatmentDate(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right text-gray-900"
                 dir="rtl"
               />
             </div>
@@ -120,7 +120,7 @@ export default function Home() {
                 id="paymentMethod"
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-right text-gray-900"
                 dir="rtl"
               >
                 <option value="bank_transfer">העברה בנקאית</option>

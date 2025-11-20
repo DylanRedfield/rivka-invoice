@@ -80,22 +80,17 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   tableCol1: {
-    width: '25%',
+    width: '33.33%',
     textAlign: 'right',
     fontSize: 10,
   },
   tableCol2: {
-    width: '25%',
+    width: '33.33%',
     textAlign: 'right',
     fontSize: 10,
   },
   tableCol3: {
-    width: '25%',
-    textAlign: 'right',
-    fontSize: 10,
-  },
-  tableCol4: {
-    width: '25%',
+    width: '33.34%',
     textAlign: 'right',
     fontSize: 10,
   },
@@ -167,7 +162,7 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
           <View style={styles.rightBox}>
             <Text style={styles.dateText}>{date}</Text>
             <Text style={styles.invoiceTitle}>קבלה</Text>
-            <Text style={styles.businessName}>עזן ושמח לילדינו בגינה</Text>
+            <Text style={styles.businessName}>{clientName}</Text>
             <View style={styles.divider} />
             <Text style={styles.invoiceNumber}>קבלה {invoiceNumber}</Text>
             <Text style={styles.invoiceLabel}>מילוי</Text>
@@ -190,14 +185,12 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({
             <Text style={styles.tableCol1}>אמצעי תשלום</Text>
             <Text style={styles.tableCol2}>פירוט</Text>
             <Text style={styles.tableCol3}>תאריך</Text>
-            <Text style={styles.tableCol4}>מקום</Text>
           </View>
 
           <View style={styles.tableRow}>
             <Text style={styles.tableCol1}>{formattedAmount}</Text>
             <Text style={styles.tableCol2}>{paymentMethod}</Text>
             <Text style={styles.tableCol3}>{treatmentDate}</Text>
-            <Text style={styles.tableCol4}>{clientName}</Text>
           </View>
 
           <View style={styles.totalRow}>
